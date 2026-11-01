@@ -169,3 +169,31 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+app.post(
+  '/books',
+  asyncHandler(async (req, res) => {
+    const { title, author, category, copies, image, description, userName, userEmail } = req.body;
+
+    // ১. প্রয়োজনীয় ফিল্ডগুলো ঠিকমতো আসছে কিনা তা চেক করা
+    if (!title || !author || !category || !copies || !image || !userEmail) {
+      return res.status(400).send({ message: 'All required fields must be filled!' });
+    }
+
+    // ২. ডাটা অবজেক্ট তৈরি করা
+    const newBook = {
+      title,
+      author,
+      category,
+      copies: Number(copies), // সংখ্যা নিশ্চিত করা
+      image,
+      description,
+      userName: userName || 'Anonymous',
+      userEmail,
+      createdAt: new Date(),
+    };
+
+    // ৩. ডাটাবেজে ইনসার্ট করা
+    const result = await booksCollection.insertOne(newBook);
+    res.status(201).send(result);
+  })
+); 

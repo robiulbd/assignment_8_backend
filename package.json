@@ -11,6 +11,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@better-auth/infra": "^0.4.26",
     "@better-auth/mongo-adapter": "^1.7.14",
     "better-auth": "^1.7.14",
     "cors": "^2.8.6",
